@@ -60,7 +60,8 @@ function isValidEmail(email) {
         res.status(200).json({
             message: `${user.companyName}, You are logged in successfully!`,
             token,
-            succes:true
+            succes:true,
+            data:user
            
         });
     
