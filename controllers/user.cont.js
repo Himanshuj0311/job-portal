@@ -26,10 +26,10 @@ const signUp = async (req, res) => {
     const hash_Password = await bcrypt.hash(password, 10);
     const user = new UserModel({ name, email, password: hash_Password, role, token });
     await user.save();
-    res.status(200).send({ msg: "Signup Successfull!" ,succes:true})
+    res.status(200).send({ message: "Signup Successfull!" ,succes:true})
 
   } catch (error) {
-    res.status(500).send({msg:error.message,succes:false});
+    res.status(500).send({message:error.message,succes:false});
   }
 }
 
@@ -40,13 +40,13 @@ const login = async (req, res) => {
     // Check if user exists
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return res.status(404).json({ msg: "User not found",succes:false });
+      return res.status(404).json({ message: "User not found",succes:false });
     }
 
     // Validate password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ msg: "Invalid credentials",succes:false });
+      return res.status(401).json({ message: "Invalid credentials",succes:false });
     }
 
     // Generate JWT token
@@ -58,14 +58,14 @@ const login = async (req, res) => {
 
     // Send response
     res.status(200).json({
-      msg: `${user.name}, You are logged in successfully!`,
+      message: `${user.name}, You are logged in successfully!`,
       token,
       succes:true
 
     });
 
   } catch (error) {
-    res.status(500).json({ msg: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 
 }
@@ -93,7 +93,7 @@ const updateProfile = async (req, res) => {
 
     const user = await UserModel.findById({ _id });
     if (!user) {
-      return res.status(404).json({ msg: "User not found",succes:false });
+      return res.status(404).json({ message: "User not found",succes:false });
     }
 
     const dataObj={_id,
@@ -116,10 +116,10 @@ const updateProfile = async (req, res) => {
       profileImage,}
 
       const updatedUser= await userRouter.findByIdAndUpdate({ _id: ObjectId(_id) }, { $set: dataObj }, { new: true });
-      return res.status(200).json({ msg: "Profile Updated successfully",data:updatedUser,succes:true });
+      return res.status(200).json({ message: "Profile Updated successfully",data:updatedUser,succes:true });
 
   } catch (error) {
-    res.status(500).json({ msg: "Server error", error: error.message,succes:false });
+    res.status(500).json({ message: "Server error", error: error.message,succes:false });
 
   }
 }

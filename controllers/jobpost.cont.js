@@ -9,7 +9,7 @@ const jobPost = async (req, res) => {
     try {   
       
       if (!title || !userId || !description || !expiryDate) {
-        return res.status(400).json({ msg: "Please provide all required fields", success: false });
+        return res.status(400).json({ message: "Please provide all required fields", success: false });
       }
   
       // Create a new job post
@@ -26,9 +26,9 @@ const jobPost = async (req, res) => {
       await newJobPost.save();
   
      
-      res.status(201).json({ msg: "Job post created successfully", success: true, jobPost: newJobPost });
+      res.status(201).json({ message: "Job post created successfully", success: true, jobPost: newJobPost });
     } catch (error) {
-      res.status(500).json({ msg: "Server error", error: error.message, success: false });
+      res.status(500).json({ message: "Server error", error: error.message, success: false });
     }
   };
 
@@ -44,7 +44,7 @@ const jobPost = async (req, res) => {
         
         const data= await JobModel.findById({_id});
         if(!data){
-            return res.status(400).json({ msg: "Post not found", success: false });
+            return res.status(400).json({ message: "Post not found", success: false });
 
         }
         if (applicants && Array.isArray(applicants)) {
@@ -69,12 +69,12 @@ const jobPost = async (req, res) => {
             additional:data.additional}
 
            const updatedData = await JobModel.findByIdAndUpdate({ _id }, { $set: dataObj }, { new: true });
-           return res.status(200).json({ msg: "Job Post Updated successfully",data:updatedData,succes:true })
+           return res.status(200).json({ message: "Job Post Updated successfully",data:updatedData,succes:true })
 
 
 
     } catch (error) {
-        res.status(500).json({ msg: "Server error", error: error.message, success: false });
+        res.status(500).json({ message: "Server error", error: error.message, success: false });
 
     }
   }

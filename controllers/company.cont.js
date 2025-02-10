@@ -26,7 +26,7 @@ function isValidEmail(email) {
       const hash_Password=await bcrypt.hash(password,10);
         const user=new CompanyModel({companyName,companyEmail,password:hash_Password,role,token});
         await user.save();
-        res.status(200).send({msg:"Signup Successfull!"})
+        res.status(200).send({message:"Signup Successfull!"})
         
     } catch (error) {
         res.status(401).send(error.message);
@@ -40,13 +40,13 @@ function isValidEmail(email) {
         // Check if user exists
         const user = await CompanyModel.findOne({ companyEmail });
         if (!user) {
-            return res.status(404).json({ msg: "company is not registered",succes:false });
+            return res.status(404).json({ message: "company is not registered",succes:false });
         }
     
         // Validate password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ msg: "Invalid credentials",succes:false });
+            return res.status(401).json({ message: "Invalid credentials",succes:false });
         }
     
         // Generate JWT token
@@ -58,14 +58,14 @@ function isValidEmail(email) {
     
       
         res.status(200).json({
-            msg: `${user.companyName}, You are logged in successfully!`,
+            message: `${user.companyName}, You are logged in successfully!`,
             token,
             succes:true
            
         });
     
     } catch (error) {
-        res.status(500).json({ msg: "Server error", error: error.message,succes:false });
+        res.status(500).json({ message: "Server error", error: error.message,succes:false });
     }
     
   }
