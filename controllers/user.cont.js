@@ -176,9 +176,9 @@ const getAllUsers = async (req, res) => {
     return res.json({
       status: 200,
       message: 'Users fetched successfully',
+      succes:true,
       data: {
         users,
-        succes:true,
         pagination: {
           totalUsers,
           totalPages,

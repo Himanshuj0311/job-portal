@@ -114,9 +114,10 @@ function isValidEmail(email) {
     return res.json({
       status: 200,
       message: 'Company fetched successfully',
+      succes:true,
       data: {
         Company,
-        succes:true,
+        
         pagination: {
           totalCompany,
           totalPages,
