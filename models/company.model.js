@@ -14,8 +14,8 @@ const companySchema = mongoose.Schema({
     token: { type: String, default: "" }
 });
 
-// Create the model from the schema
+
 const CompanyModel = mongoose.model("company", companySchema);
 
-// Export the model
+
 module.exports = CompanyModel;

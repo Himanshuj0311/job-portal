@@ -1,5 +1,5 @@
 const express = require('express')
-const CompanyModel = require("../models/user.model")
+const CompanyModel = require("../models/company.model")
 const bcrypt = require('bcrypt')
 const app = express()
 app.use(express.json());
@@ -17,19 +17,21 @@ function isValidEmail(email) {
     try {
    
         const {companyName,companyEmail,password,role,token}=req.body;
+        console.log(req.body)
         const isUserPresent = await CompanyModel.findOne({ companyEmail });
-
+       // console.log(isUserPresent)
       if (isUserPresent) {
-        return res.status(401).json({ message: "Company already registered. Please login." });
+        return res.status(401).json({ message: "Company already registered. Please login." ,success:flase});
     }
-      if(!isValidEmail(companyEmail)) return res.status(401).send("Email is not correct")
+      if(!isValidEmail(companyEmail)) return res.status(401).json({message:"Email is not correct",success:flase})
+
       const hash_Password=await bcrypt.hash(password,10);
         const user=new CompanyModel({companyName,companyEmail,password:hash_Password,role,token});
         await user.save();
-        res.status(200).send({message:"Signup Successfull!"})
+        res.status(200).json({message:"Signup successsfull!",success:true, user})
         
     } catch (error) {
-        res.status(401).send(error.message);
+      res.status(500).json({ message: "Server error", error: error.message,success:false });
     }
   }
 
@@ -40,13 +42,13 @@ function isValidEmail(email) {
         // Check if user exists
         const user = await CompanyModel.findOne({ companyEmail });
         if (!user) {
-            return res.status(404).json({ message: "company is not registered",succes:false });
+            return res.status(404).json({ message: "company is not registered",success:false });
         }
     
         // Validate password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid credentials",succes:false });
+            return res.status(401).json({ message: "Invalid credentials",success:false });
         }
     
         // Generate JWT token
@@ -58,15 +60,14 @@ function isValidEmail(email) {
     
       
         res.status(200).json({
-            message: `${user.companyName}, You are logged in successfully!`,
+            message: `${user.companyName}, You are logged in successsfully!`,
             token,
-            succes:true,
-            data:user
+            success:true
            
         });
     
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message,succes:false });
+        res.status(500).json({ message: "Server error", error: error.message,success:false });
     }
     
   }
@@ -113,11 +114,10 @@ function isValidEmail(email) {
 
     return res.json({
       status: 200,
-      message: 'Company fetched successfully',
-      succes:true,
+      message: 'Company fetched successsfully',
+      success:true,
       data: {
         Company,
-        
         pagination: {
           totalCompany,
           totalPages,
@@ -132,7 +132,7 @@ function isValidEmail(email) {
       return res.status(500).json({
         status: 500,
         message: 'An error occurred while fetching Company',
-        succes:false
+        success:false
       });
     }
   }
